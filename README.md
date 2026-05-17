@@ -52,16 +52,6 @@ The check script validates JavaScript syntax and parses `manifest.json`.
 - `form_script.js` - Fills and submits individual forms.
 - `icon*.png` - Extension icons.
 
-## Publishing Checklist
-
-Before publishing a public repository:
-
-- Do not commit captured portal pages, downloaded PDFs, study notes, screenshots, cookies, credentials, or any student/patient/institutional data.
-- Run `npm run check`.
-- Load the extension unpacked and test it against the current SLCM pages.
-- Review the requested Chrome permissions in `manifest.json`.
-- Update `CHANGELOG.md` if you add one later.
-
 ## License
 
 MIT. See [LICENSE](LICENSE).
