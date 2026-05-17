@@ -1,8 +1,12 @@
-# Mahidol SLCM Evaluator
+# SLCM Evaluator
 
-A small Chrome extension that helps fill Mahidol SLCM evaluation forms with a user-selected 1-5 score.
+A small Chrome extension that helps fill SLCM evaluation forms with a user-selected 1-5 score.
 
-This project is not affiliated with, endorsed by, or maintained by Mahidol University, Ramathibodi Hospital, or the SLCM platform operators.
+This project is not affiliated with, endorsed by, or maintained by any institution or SLCM platform operator.
+
+## Disclaimer
+
+This project does not promote, encourage, or endorse misuse of evaluation systems or violations of institutional policy. It is provided as-is for personal use where permitted. The author accepts no responsibility or liability for any academic, professional, technical, or other consequences from using this project.
 
 ## What It Does
 
@@ -15,10 +19,10 @@ Use this only where you are allowed to do so. You are responsible for complying 
 
 ## Supported Pages
 
-The extension is scoped to:
+The extension is scoped to secure SLCM survey pages matching:
 
-- `https://www.rama.mahidol.ac.th/slcm/survey/portal_index.php*`
-- `https://www.rama.mahidol.ac.th/slcm/survey/ans_eva_form.php*`
+- `https://*/slcm/survey/portal_index.php*`
+- `https://*/slcm/survey/ans_eva_form.php*`
 
 The manifest intentionally avoids broad `http://*/*`, `https://*/*`, and `file:///*` permissions.
 

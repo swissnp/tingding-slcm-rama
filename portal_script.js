@@ -7,6 +7,7 @@
   const DEFAULT_SCORE = 4;
   const SCORE_OPTIONS = [5, 4, 3, 2, 1];
   const FORM_URL_PATTERN = /open_frm\(['"]([^'"]+)['"]/;
+  const SCORE_STORAGE_KEY = 'slcmEvaluatorScore';
 
   if (window.location.href.includes('ans_eva_form.php') || window.location.href.includes('survey_form.php')) {
     return;
@@ -16,7 +17,7 @@
     try {
       return new URL(value, window.location.href).href;
     } catch (error) {
-      console.warn('Mahidol Evaluator: skipped invalid form URL.', error);
+      console.warn('SLCM Evaluator: skipped invalid form URL.', error);
       return null;
     }
   }
@@ -39,19 +40,21 @@
 
   function addAutoButton() {
     // Avoid adding multiple buttons if the script runs more than once.
-    if (document.getElementById('mahidol-auto-eval-panel')) return;
+    if (document.getElementById('slcm-auto-eval-panel')) return;
 
     const panel = document.createElement('div');
-    panel.id = 'mahidol-auto-eval-panel';
+    panel.id = 'slcm-auto-eval-panel';
     Object.assign(panel.style, {
       position: 'fixed',
       bottom: '20px',
       right: '20px',
       zIndex: 10000,
       display: 'flex',
-      alignItems: 'center',
+      flexDirection: 'column',
+      alignItems: 'stretch',
       gap: '8px',
       padding: '10px',
+      maxWidth: '360px',
       backgroundColor: '#ffffff',
       border: '1px solid #b8d7b8',
       borderRadius: '6px',
@@ -61,8 +64,15 @@
       fontSize: '14px'
     });
 
+    const controls = document.createElement('div');
+    Object.assign(controls.style, {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    });
+
     const label = document.createElement('label');
-    label.htmlFor = 'mahidol-auto-eval-score';
+    label.htmlFor = 'slcm-auto-eval-score';
     label.textContent = 'Point';
     Object.assign(label.style, {
       color: '#222222',
@@ -70,7 +80,7 @@
     });
 
     const scoreSelect = document.createElement('select');
-    scoreSelect.id = 'mahidol-auto-eval-score';
+    scoreSelect.id = 'slcm-auto-eval-score';
     SCORE_OPTIONS.forEach(score => {
       const option = document.createElement('option');
       option.value = String(score);
@@ -88,8 +98,8 @@
     });
 
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get({ mahidolEvaluatorScore: DEFAULT_SCORE }, result => {
-        const savedScore = Number(result.mahidolEvaluatorScore);
+      chrome.storage.local.get({ [SCORE_STORAGE_KEY]: DEFAULT_SCORE }, result => {
+        const savedScore = Number(result[SCORE_STORAGE_KEY]);
         if (Number.isInteger(savedScore) && savedScore >= 1 && savedScore <= 5) {
           scoreSelect.value = String(savedScore);
         }
@@ -97,7 +107,7 @@
     }
 
     const button = document.createElement('button');
-    button.id = 'mahidol-auto-eval-btn';
+    button.id = 'slcm-auto-eval-btn';
     button.textContent = 'Auto Evaluate All';
     Object.assign(button.style, {
       padding: '10px 15px',
@@ -108,6 +118,15 @@
       cursor: 'pointer',
       fontSize: '14px'
     });
+
+    const disclaimer = document.createElement('div');
+    disclaimer.textContent = 'Disclaimer: This tool does not promote misuse. Use it only where allowed; the author accepts no responsibility for consequences.';
+    Object.assign(disclaimer.style, {
+      color: '#555555',
+      fontSize: '11px',
+      lineHeight: '1.35'
+    });
+
     button.addEventListener('click', () => {
       const selectedScore = Number(scoreSelect.value);
       const urls = findFormUrls();
@@ -123,7 +142,7 @@
                 button.textContent = 'Auto Evaluate All';
 
                 if (chrome.runtime.lastError) {
-                  console.error('Mahidol Evaluator: message failed.', chrome.runtime.lastError);
+                  console.error('SLCM Evaluator: message failed.', chrome.runtime.lastError);
                   alert('Could not communicate with the extension. Please reload the extension and try again.');
                   return;
                 }
@@ -138,7 +157,7 @@
             };
 
             if (chrome.storage && chrome.storage.local) {
-              chrome.storage.local.set({ mahidolEvaluatorScore: selectedScore }, startProcessing);
+              chrome.storage.local.set({ [SCORE_STORAGE_KEY]: selectedScore }, startProcessing);
             } else {
               startProcessing();
             }
@@ -153,9 +172,11 @@
         alert('No evaluation forms found on this page.');
       }
     });
-    panel.appendChild(label);
-    panel.appendChild(scoreSelect);
-    panel.appendChild(button);
+    controls.appendChild(label);
+    controls.appendChild(scoreSelect);
+    controls.appendChild(button);
+    panel.appendChild(controls);
+    panel.appendChild(disclaimer);
     document.body.appendChild(panel);
   }
   // Run after DOM is ready.

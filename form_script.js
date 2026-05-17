@@ -8,6 +8,7 @@
   const MAX_SCORE = 5;
   const FORM_READY_DELAY_MS = 800;
   const CLOSE_AFTER_SUBMIT_DELAY_MS = 6000;
+  const SCORE_STORAGE_KEY = 'slcmEvaluatorScore';
 
   function getConfiguredScore() {
     return new Promise(resolve => {
@@ -16,8 +17,8 @@
         return;
       }
 
-      chrome.storage.local.get({ mahidolEvaluatorScore: DEFAULT_SCORE }, result => {
-        const score = Number(result.mahidolEvaluatorScore);
+      chrome.storage.local.get({ [SCORE_STORAGE_KEY]: DEFAULT_SCORE }, result => {
+        const score = Number(result[SCORE_STORAGE_KEY]);
         resolve(Number.isInteger(score) && score >= MIN_SCORE && score <= MAX_SCORE ? score : DEFAULT_SCORE);
       });
     });
@@ -91,7 +92,7 @@
       }, FORM_READY_DELAY_MS);
 
     } catch (err) {
-      console.error('Mahidol Evaluator: error auto filling form', err);
+      console.error('SLCM Evaluator: error auto filling form', err);
     }
   }
 
