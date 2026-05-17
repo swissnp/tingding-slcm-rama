@@ -1,0 +1,37 @@
+{
+  "name": "Mahidol SLCM Evaluator",
+  "description": "A Chrome extension that helps fill Mahidol SLCM evaluation forms with a user-selected score.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "minimum_chrome_version": "114",
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.rama.mahidol.ac.th/slcm/survey/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.rama.mahidol.ac.th/slcm/survey/ans_eva_form.php*"],
+      "js": ["form_script.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.rama.mahidol.ac.th/slcm/survey/portal_index.php*"],
+      "js": ["portal_script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Mahidol Evaluator"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

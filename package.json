@@ -1,0 +1,16 @@
+{
+  "name": "mahidol-slcm-evaluator",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Chrome extension for filling Mahidol SLCM evaluation forms with a selected score.",
+  "license": "MIT",
+  "scripts": {
+    "check": "node --check background.js && node --check portal_script.js && node --check form_script.js && node -e \"JSON.parse(require('fs').readFileSync('manifest.json', 'utf8'))\"",
+    "package": "mkdir -p dist && zip -r dist/mahidol-slcm-evaluator.zip manifest.json background.js portal_script.js form_script.js icon16.png icon48.png icon128.png README.md LICENSE PRIVACY.md"
+  },
+  "keywords": [
+    "chrome-extension",
+    "mahidol",
+    "slcm"
+  ]
+}

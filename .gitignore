@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Dependencies and package-manager noise
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+coverage/
+*.zip
+*.crx
+*.pem
+*.html
+*.pdf
+*.txt
+
+# Editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
